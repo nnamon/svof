@@ -741,7 +741,7 @@ end
 
 local city_colours = {
   ["0,255,0"] = "Eleusis",
-  ["0,128,128"] = "Cyrene",
+  ["20,158,160"] = "Cyrene",
   ["255,0,0"] = "Mhaldor",
   ["128,128,0"] = "Hashan",
   ["128,0,128"] = "Ashtan",

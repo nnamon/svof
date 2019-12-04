@@ -6,7 +6,7 @@
 	<AliasPackage />
 	<ActionPackage />
 	<ScriptPackage>
-		<Script isActive="yes" isFolder="no">
+		<Script isActive="no" isFolder="no">
 			<name>Curing skeleton</name>
 			<packageName></packageName>
 			<script>-- Svof (c) 2011-2018 by Vadim Peretokin
@@ -2236,11 +2236,20 @@ function sk.sendqueuecmd(...)
       if sk.sendqueuel + #what + 1 &gt;= sk.achaea_command_max_length then
         sk.dosendqueue()
       end
-
-      sk.sendqueue[#sk.sendqueue+1] = what
-      sk.sendqueuel = sk.sendqueuel + #what + 1 -- +1 for the separator
-      if not sk.sendcuringtimer then
-        sk.sendcuringtimer = tempTimer(0, sk.dosendqueue)
+      -- Do not queue commands that contain a command separator.
+      if conf.commandseparator and conf.commandseparator ~= '' and 
+        string.find(what, conf.commandseparator, 1, true) then
+        -- flush the buffer first to maintain order.
+        sk.dosendqueue()
+        -- send the item immediately.
+        svo.oldsend(what, false)
+      else
+        -- Otherwise, queue the item as per normal.
+        sk.sendqueue[#sk.sendqueue+1] = what
+        sk.sendqueuel = sk.sendqueuel + #what + 1 -- +1 for the separator
+        if not sk.sendcuringtimer then
+          sk.sendcuringtimer = tempTimer(0, sk.dosendqueue)
+        end
       end
     elseif type(what) == 'table' and what.func then
       sk.dosendqueue() --flush send queue first
@@ -2732,7 +2741,7 @@ signals.after_prompt_processing:connect(function ()
   if conf.singleprompt then
     selectString(getCurrentLine(), 1)
     copy()
-    clearWindow('bottomprompt')
+    clearWindow('svo.bottomprompt')
     svo.bottomprompt:paste()
 
     if conf.singlepromptblank then
