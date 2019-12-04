@@ -3496,7 +3496,7 @@ if svo.haveskillset('pervasion') then
 end
 do
   function defences.enablelifevision()
-    if svo.dict.lifevision then return end
+    if svo.dict.lifevision and svo.defs_data.lifevision then return end
 
     defs_data:set('lifevision', { type = 'general',
       on = {"You narrow your eyes and blink rapidly, enhancing your vision to seek out sources of lifeforce in others.", "You already possess enhanced vision."},
