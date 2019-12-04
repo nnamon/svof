@@ -6,7 +6,7 @@
 	<AliasPackage />
 	<ActionPackage />
 	<ScriptPackage>
-		<Script isActive="no" isFolder="no">
+		<Script isActive="yes" isFolder="no">
 			<name>Curing skeleton</name>
 			<packageName></packageName>
 			<script>-- Svof (c) 2011-2018 by Vadim Peretokin
@@ -463,6 +463,7 @@ end
 
 -- balanceful check
 svo.check_balanceful_acts = function(sync_mode)
+
   if affs.sleep or affs.stun or affs.unconsciousness or not bals.balance or not bals.equilibrium or not bals.rightarm or not bals.leftarm or (svo.me.class == 'Druid' and not bals.hydra)
   then return end
 
@@ -470,7 +471,11 @@ svo.check_balanceful_acts = function(sync_mode)
   local prios = {}
   local function check(what)
     for i, j in pairs(what) do
-      if not (conf.serverside and svo.serverignore[i]) and j.p.physical.balanceful_act and j.p.physical.isadvisable() and not svo.ignore[i] then
+      
+      if not (conf.serverside and svo.serverignore[i]) and 
+         j.p.physical.balanceful_act and 
+         j.p.physical.isadvisable() and 
+         not svo.ignore[i] then
         prios[i] = (not sync_mode) and j.p.physical.aspriority or j.p.physical.spriority
       end
     end
@@ -587,7 +592,6 @@ end
 function svo.addbalanceful(name, func)
   svo.assert(name and func, "svo.addbalanceful: both name and function are required")
   svo.assert(type(func) == 'function', "svo.addbalanceful: second argument has to be a function (you gave it a "..type(func)..")")
-
   balanceful[name] = func
 end
 

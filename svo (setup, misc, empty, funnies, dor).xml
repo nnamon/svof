@@ -104,6 +104,7 @@ end
 svo.affs             = svo.affs or {}
 local affs           = svo.affs
 svo.balanceless      = svo.balanceless or {}
+svo.balanceful       = svo.balanceful or {}
 svo.cp               = svo.cp or {}
 svo.cpp              = svo.cpp or {}
 svo.defences         = svo.defences or {}
@@ -3045,6 +3046,7 @@ function svo.dofirst(what, echoback, show)
   if not debug.traceback():find('Trigger', 1, true) then svo.make_gnomes_work() end
   raiseEvent("svo do changed")
 end
+
 function svo.dofreefirst(what, echoback)
   table.insert(me.dofreequeue, 1, what)
   if echoback then svo.echof("Will do \"%s\" first in dofree.", tostring(what)) end
@@ -3201,6 +3203,7 @@ function svo.undo(what, echoback)
       action = action.what
     end
 
+    table.remove(me.doqueue, 1)
     if echoback then svo.echof("Removed \"%s\" from the do queue.", action) end
   end
   raiseEvent("svo do changed")
