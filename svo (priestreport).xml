@@ -294,7 +294,7 @@ svo.echof("People on the locatelist list: %s", l)</script>
 				<packageName></packageName>
 				<regex>^vshow locatelist$</regex>
 			</Alias>
-			<Alias isActive="yes" isFolder="no">
+			<Alias isActive="no" isFolder="no">
 				<name>(seek person) Manually seek &amp; report a person</name>
 				<script>svo.locating = {name = matches[2]:title()}
 svo.doaddfree("angel seek "..svo.locating.name)</script>

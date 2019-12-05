@@ -1212,11 +1212,17 @@ end
 
 -- functions to handle the defc table events updates
 function defences.got(def)
-  if not defc[def] then defc[def] = true; raiseEvent("svo got def", def) end
+  if not defc[def] then 
+    defc[def] = true; 
+    raiseEvent("svo got def", def) 
+  end
 end
 
 function defences.lost(def)
-  if defc[def] then defc[def] = false; raiseEvent("svo lost def", def) end
+  if defc[def] then 
+    defc[def] = false 
+    raiseEvent("svo lost def", def) 
+  end
 end
 
 -- custom def types like channels
@@ -4522,7 +4528,7 @@ local function show_defs(tbl, linkcommand, cmdname)
     if skillset and not sk.ignored_defences[skillset].status then svo.echof("%s defences:", skillset:title()) end
     for _,def in ipairs(what) do
       local disabled = ((sk.ignored_defences[skillset] and sk.ignored_defences[skillset].status) and true or (sk.ignored_defences[sk.ignored_defences_map[def]].t[def]))
-
+      
       if not disabled and not tbl[def] and not defences.nodef_list[def] then
         if (count % 3) ~= 0 then
           if not linkcommand or not dechoLink then
