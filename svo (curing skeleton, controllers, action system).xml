@@ -2743,7 +2743,12 @@ signals.after_prompt_processing:connect(function ()
 
   -- then do singleprompt business
   if conf.singleprompt then
-    selectString(getCurrentLine(), 1)
+    local plain_prompt = svo.cp.display():gsub("&lt;.-&gt;", "")
+    if conf.paused then
+      plain_prompt = "(p) " .. plain_prompt
+    end
+    -- selectString(getCurrentLine(), 1)
+    selectString(plain_prompt, 1)
     copy()
     clearWindow('svo.bottomprompt')
     svo.bottomprompt:paste()
@@ -2751,10 +2756,20 @@ signals.after_prompt_processing:connect(function ()
     if conf.singlepromptblank then
       replace("")
     elseif not conf.singlepromptkeep then
+      local prompt_start_index = string.find(getCurrentLine(), plain_prompt, 1, true)
+      local line_diff = nil
+      if prompt_start_index ~= nil then
+        line_diff = string.sub(getCurrentLine(), 0, prompt_start_index-1)
+        line_diff = string.trim(line_diff)
+        selectString(line_diff, 1)
+        copy()
+      end
       deleteLine()
+      if line_diff ~= nil and line_diff ~= "" then
+        insertText(" ")
+        paste()
+      end
     end
-
-    deselect()
   end
 end, "main prompt processing")
 

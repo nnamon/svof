@@ -7182,20 +7182,32 @@ end</script>
 	
 	-- if you're in an unrecognised class, use the None system
 	if not svo.knownskills[newclass:lower()] then newclass = "None" end
+  
+  -- Dragon check.
+  if newclass:match("Dragon") then
+    svo.defc.dragonform = true
+  else
+    svo.defc.dragonform = nil
+  end
 		
-	-- save general defences in temp table, so svo doesn't waste resources
-	-- deffing what is already up	
-  for k,v in pairs(svo.defc) do
-    if v then
-      if svo.defs_data[k].type then
-        if svo.defs_data[k].type == "general" then
-          temp_defs[k] = true
+  if svo.me.class ~= newclass then
+  
+  	-- save general defences in temp table, so svo doesn't waste resources
+  	-- deffing what is already up	
+    for k,v in pairs(svo.defc) do
+      if v then
+        if svo.defs_data[k].type then
+          if svo.defs_data[k].type == "general" then
+            temp_defs[k] = true
+            -- Retain the value in the original defc table.
+          else
+            -- Unset the value in the original defc table.
+            svo.defc[k] = nil
+          end
         end
       end
     end
-  end
-	
-  if svo.me.class ~= newclass then
+    
     local oldclass = svo.me.class
 
     -- kill temporary defense triggers for old class
@@ -7212,7 +7224,7 @@ end</script>
     svo.sk.resetserversideprios()
 		
     svo.systemloaded = false; svo_init_system()
-		svo.defc = temp_defs
+		--svo.defc = temp_defs -- DO NOT REASSIGN TO A NEW TABLE, THIS BREAKS REFERENCES.
     svo.echof("Changed your Svof from %s over to %s.", oldclass, svo.me.class)
 		
 		-- if system is not paused after dragonforming, unpause serverside

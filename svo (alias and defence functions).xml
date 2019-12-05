@@ -864,7 +864,7 @@ end
 function svo.get_herbs()
   if not sys.enabledgmcp then svo.echof("You need to enable GMCP for this alias to work.") return end
 
-  if (affs.blindaff or defc.blind) and not defc.mindseye then svo.echof("vget herbs doesn't work when you're true blind (if you do have mindseye, perhaps check def?)") return end
+  if (affs.blindaff or svo.defc.blind) and not svo.defc.mindseye then svo.echof("vget herbs doesn't work when you're true blind (if you do have mindseye, perhaps check def?)") return end
 
   sk.retrieving_herbs = true
   send('ql', false)
@@ -933,7 +933,7 @@ function svo.reset.general()
 end
 
 function svo.reset.defs(echoback)
-  for def, _ in pairs(defc) do
+  for def, _ in pairs(svo.defc) do
     if not svo.defs_data[def] or (svo.defs_data[def] and not svo.defs_data[def].stays_on_death) then
       svo.defc[def] = nil
     end
@@ -1157,7 +1157,7 @@ end
 if svo.haveskillset('kaido') then
   svo.transmute = function()
     -- custom check here, not using isadvisable because this should ignore prone
-    if (not defc.dragonform and (stats.currenthealth &lt; sys.transmuteamount) and not svo.doingaction'healhealth' and not svo.doingaction'transmute' and svo.can_usemana()) then
+    if (not svo.defc.dragonform and (stats.currenthealth &lt; sys.transmuteamount) and not svo.doingaction'healhealth' and not svo.doingaction'transmute' and svo.can_usemana()) then
         svo.doaction('transmute', 'physical')
     end
   end

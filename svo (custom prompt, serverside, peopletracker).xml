@@ -617,7 +617,9 @@ function cp.makefunction()
   local t = cp.generatetable(conf.customprompt)
 
   local display, error = loadstring("return table.concat({"..table.concat(t, ", ").."})")
-  if display then cp.display = display else
+  if display then 
+    cp.display = display 
+  else
     cp.display = function() return '' end
     svo.debugf("Couldn't compile the custom prompt: %s", error)
   end

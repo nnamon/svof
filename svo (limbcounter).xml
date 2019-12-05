@@ -1907,7 +1907,7 @@ end</script>
 					</regexCodePropertyList>
 				</Trigger>
 			</TriggerGroup>
-			<TriggerGroup isActive="yes" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+			<TriggerGroup isActive="no" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
 				<name>svo Dragon limbcounter</name>
 				<script></script>
 				<triggerType>0</triggerType>
@@ -2064,30 +2064,6 @@ svo.lc_lasthit = svo.lc_lasthit or ""
 svo.lc_break_at = svo.lc_break_at or 10
 svo.lc_prep_at = function () local prep if svo.lc_break_at then prep = svo.lc_break_at - 1 return prep end end
 svo.lc_myclass = svo.lc_myclass or ""
-if table.contains(svo.lc_classlist, svo.me.class) or svo.defc["dragonform"] == true then
-		disableTrigger("svo Meta limbcounter")
-		disableTrigger("svo Monk limbcounter")
-		disableTrigger("svo Burn limbcounter")
-		disableTrigger("svo Priest limbcounter")
-		disableTrigger("svo Magi limbcounter")
-		disableTrigger("svo earth Elemental Lord limbcounter")
-		disableTrigger("svo Dragon limbcounter")
-		disableTrigger("svo Knight limbcounter")
-  if svo.me.class == "Paladin" or svo.me.class == "Runewarden" or svo.me.class == "Infernal" then
-    enableTrigger("svo Knight limbcounter")
-		svo.lc_myclass = svo.me.class
-  elseif svo.me.class == "Druid" or svo.me.class == "Sentinel" then
-    enableTrigger("svo Meta limbcounter")
-		svo.lc_myclass = svo.me.class
-  elseif svo.defc["dragonform"] == true then
-		enableTrigger("svo Dragon limbcounter")
-		svo.lc_myclass =  "Dragon"
-    svo.lc_break_at = 4
-	elseif table.contains(svo.lc_classlist, svo.me.class) then
-		svo.lc_myclass = svo.me.class
-    enableTrigger("svo " .. svo.me.class .. " limbcounter")
-  end
-end
 
 function svo.lc_smash()
   hittable = {}
@@ -2438,8 +2414,6 @@ function svo.lc_prompttag2()
     )
 end
 
-svo.adddefinition("@lc_prompttag2", "svo.lc_prompttag2()")
-
 function svo.lc_prompttag()
   if
     svo.defc.dragonform or not svo.lc_lasthit or table.contains(svo.lc_list, svo.me.class) or not svo.lc_list[svo.lc_lasthit]
@@ -2467,8 +2441,6 @@ function svo.lc_prompttag()
     )
 end
 
-svo.adddefinition("@lc_prompttag", "svo.lc_prompttag()")
-
 function svo.lc_prompttag3()
   if not svo.lc_lasthit or not svo.lc_list or not svo.lc_list[svo.lc_lasthit] then
     return ""
@@ -2494,12 +2466,41 @@ function svo.lc_prompttag3()
     )
 end
 
-svo.adddefinition("@lc_prompttag3", "svo.lc_prompttag3()")
-svo.echof("Loaded svo limbcounter, %s %s.", svo.lc_myclass, tostring(svo.lc_version))
-</script>
-				<eventHandlerList>
-					<string>svo system loaded</string>
-				</eventHandlerList>
+function svo.lc_init()
+  svo.adddefinition("@lc_prompttag", "svo.lc_prompttag()")
+  svo.adddefinition("@lc_prompttag2", "svo.lc_prompttag2()")
+  svo.adddefinition("@lc_prompttag3", "svo.lc_prompttag3()")
+  
+  if table.contains(svo.lc_classlist, svo.me.class) or svo.defc["dragonform"] == true then
+  		disableTrigger("svo Meta limbcounter")
+  		disableTrigger("svo Monk limbcounter")
+  		disableTrigger("svo Burn limbcounter")
+  		disableTrigger("svo Priest limbcounter")
+  		disableTrigger("svo Magi limbcounter")
+  		disableTrigger("svo earth Elemental Lord limbcounter")
+  		disableTrigger("svo Dragon limbcounter")
+  		disableTrigger("svo Knight limbcounter")
+    if svo.me.class == "Paladin" or svo.me.class == "Runewarden" or svo.me.class == "Infernal" then
+      enableTrigger("svo Knight limbcounter")
+  		svo.lc_myclass = svo.me.class
+    elseif svo.me.class == "Druid" or svo.me.class == "Sentinel" then
+      enableTrigger("svo Meta limbcounter")
+  		svo.lc_myclass = svo.me.class
+    elseif svo.defc["dragonform"] == true then
+  		enableTrigger("svo Dragon limbcounter")
+  		svo.lc_myclass =  "Dragon"
+      svo.lc_break_at = 4
+  	elseif table.contains(svo.lc_classlist, svo.me.class) then
+  		svo.lc_myclass = svo.me.class
+      enableTrigger("svo " .. svo.me.class .. " limbcounter")
+    end
+  end
+  
+  svo.echof("Loaded svo limbcounter, %s %s.", svo.lc_myclass, tostring(svo.lc_version))
+end
+
+svo.lc_init()</script>
+				<eventHandlerList />
 			</Script>
 			<Script isActive="yes" isFolder="no">
 				<name>svo count show</name>
@@ -2690,6 +2691,19 @@ svo.config.setoption(
   }
 )</script>
 				<eventHandlerList />
+			</Script>
+			<Script isActive="yes" isFolder="no">
+				<name>svo.lc_init</name>
+				<packageName></packageName>
+				<script>-------------------------------------------------
+--         Put your Lua functions here.        --
+--                                             --
+-- Note that you can also use external scripts --
+-------------------------------------------------
+</script>
+				<eventHandlerList>
+					<string>svo system loaded</string>
+				</eventHandlerList>
 			</Script>
 		</ScriptGroup>
 	</ScriptPackage>
