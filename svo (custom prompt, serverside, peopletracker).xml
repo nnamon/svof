@@ -839,6 +839,9 @@ function sk.updateserversideprios()
 
   -- don't notify of prio changes until the system is loaded, as they can get shuffled around a bit
   if not svo.systemloaded then return end
+  
+  -- don't notify of prio changes until we are logged in.
+	if not (gmcp and gmcp.Char and gmcp.Char.Name) then return end
 
   local afterstate = sk.getafterstateprios()
   svo.debugf("sk.updateserverwatch sk.getafterstateprios: %s", getStopWatchTime(sk.updateserverwatch))

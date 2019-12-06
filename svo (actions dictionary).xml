@@ -5439,7 +5439,13 @@ end
           -- after sending a bunch of clots, wait a bit before doing it again
           if affs.bleeding then
             if affs.bleeding.spammingbleed then killTimer(affs.bleeding.spammingbleed); affs.bleeding.spammingbleed = nil end
-            affs.bleeding.spammingbleed = tempTimer(svo.getping(), function() affs.bleeding.spammingbleed = nil; svo.make_gnomes_work() end)
+            affs.bleeding.spammingbleed = tempTimer(svo.getping(), 
+              function() 
+                if affs.bleeding then
+                  affs.bleeding.spammingbleed = nil
+                end
+                svo.make_gnomes_work() 
+              end)
           end
         end
       end

@@ -2279,14 +2279,14 @@ function svo.sk.dosendqueue()
   if sk.sendcuringtimer then killTimer(sk.sendcuringtimer) end
 
   if #sk.sendqueue &lt;= 1 then
-    send(sk.sendqueue[1] or '', false)
+    svo.oldsend(sk.sendqueue[1] or '', false)
   elseif conf.commandseparator and conf.commandseparator ~= '' and #sk.sendqueue &lt;= 10 then
-    send(table.concat(sk.sendqueue, conf.commandseparator), false)
+    svo.oldsend(table.concat(sk.sendqueue, conf.commandseparator), false)
   elseif #sk.sendqueue &lt;= 9 then
-    send("9multicmd {"..table.concat(sk.sendqueue, "}{").."}", false)
+    svo.oldsend("9multicmd {"..table.concat(sk.sendqueue, "}{").."}", false)
   else
     local text = table.concat(sk.sendqueue, "/")
-    sendAll("setalias multicmd "..text, 'multicmd', false)
+    svo.oldsendAll("setalias multicmd "..text, 'multicmd', false)
   end
 
   sk.sendqueue = {}

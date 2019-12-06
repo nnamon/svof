@@ -2345,6 +2345,7 @@ svo.basictableindexdiff = function (t1, t2)
 end
 
 svo.oldsend = _G.send
+svo.oldsendAll = _G.sendAll
 local fancy_send_commands = {}
 
 function svo.fancysend(what, store)

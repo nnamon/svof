@@ -7169,8 +7169,8 @@ function svo_init_system()
 	if force_init then sendSocket("\n") end
 end</script>
 				<eventHandlerList>
-					<string>sysLoadEvent</string>
 					<string>sysInstall</string>
+					<string>sysLoadEvent</string>
 				</eventHandlerList>
 			</Script>
 			<Script isActive="yes" isFolder="no">
@@ -7180,15 +7180,15 @@ end</script>
   local newclass = (override ~= "gmcp.Char.Status") and override or gmcp.Char.Status.class
 	local temp_defs = {}
 	
-	-- if you're in an unrecognised class, use the None system
-	if not svo.knownskills[newclass:lower()] then newclass = "None" end
-  
   -- Dragon check.
   if newclass:match("Dragon") then
     svo.defc.dragonform = true
   else
     svo.defc.dragonform = nil
   end
+  
+	-- if you're in an unrecognised class, use the None system
+	if not svo.knownskills[newclass:lower()] then newclass = "None" end
 		
   if svo.me.class ~= newclass then
   
