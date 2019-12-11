@@ -1415,8 +1415,9 @@ signals.systemstart:connect(function ()
     svo.update(me.lustlist, t)
   end
 end, 'load lust list')
-
-signals.saveconfig:connect(function () svo.tablesave(getMudletHomeDir() .. "/svo/config/lustlist", me.lustlist) end, 'save lust list')
+-- save the lust list
+signals.saveconfig:connect(function () me.lustlist = me.lustlist or {}
+  svo.tablesave(getMudletHomeDir() .. "/svo/config/lustlist", me.lustlist) end, 'save lust list')
 
 -- load the hoist list
 signals.systemstart:connect(function ()
@@ -1428,8 +1429,9 @@ signals.systemstart:connect(function ()
     svo.update(me.hoistlist, t)
   end
 end, 'load hoist list')
-
-signals.saveconfig:connect(function () svo.tablesave(getMudletHomeDir() .. "/svo/config/hoistlist", me.hoistlist) end, 'save hoist list')
+-- save the hoist list
+signals.saveconfig:connect(function () me.hoistlist = me.hoistlist or {}
+  svo.tablesave(getMudletHomeDir() .. "/svo/config/hoistlist", me.hoistlist) end, 'save hoist list')
 
 -- load the ignore list
 signals.systemstart:connect(function ()
@@ -1440,10 +1442,12 @@ signals.systemstart:connect(function ()
     table.load(conf_path, t)
     svo.update(svo.ignore, t)
   end
-
   svo.ignore.checkparalysis = true
 end, 'load ignore list')
-
+-- save the ignore list
+  signals.saveconfig:connect(function () svo.ignore = svo.ignore or {}
+  table.save(getMudletHomeDir() .. "/svo/config/ignore", svo.ignore)
+end, 'save ignore list')
 
 -- load the locatelist
 signals.systemstart:connect(function ()
@@ -1456,6 +1460,7 @@ signals.systemstart:connect(function ()
     svo.update(me.locatelist, t)
   end
 end, 'load locate list')
+-- save the locate list
 signals.saveconfig:connect(function () me.locatelist = me.locatelist or {}
   svo.tablesave(getMudletHomeDir() .. "/svo/config/locatelist", me.locatelist)
 end, 'save locate list')
@@ -1471,6 +1476,7 @@ signals.systemstart:connect(function ()
     svo.update(me.watchfor, t)
   end
 end, 'load watchfor list')
+-- save the watchfor list
 signals.saveconfig:connect(function () me.watchfor = me.watchfor or {}
   svo.tablesave(getMudletHomeDir() .. "/svo/config/watchfor", me.watchfor)
 end, 'save watchfor list')
@@ -1580,11 +1586,12 @@ for _, config in ipairs{
       end
     end
 		svo.setup_default_serverignore()
-  end, 'load server/casmus/custom data')
+  end, 'load '..config.location..' data')
+  
   -- save the config.location list
   signals.saveconfig:connect(function ()
     svo.tablesave(getMudletHomeDir() .. "/svo/config/"..config.location, config.localtable)
-  end, 'save server/casmus/custom data')
+  end, 'save '.. config.location ..'data')
 end
 
 
