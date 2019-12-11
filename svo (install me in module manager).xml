@@ -5380,11 +5380,29 @@ local function docc(...)
   elseif svo.conf.ccto == 'team' then sendto = "team "
   elseif svo.conf.ccto == 'echo' then method = svo.echof; sendto = ""
   else sendto = "clan "..svo.conf.ccto.." tell " end
-
-  if not method then
-    send(sendto .. string.format(...), false)
+  
+  local first_arg = unpack({...})
+  local sentences = {}
+  -- Handle multi-line reports
+  if type(first_arg) == 'table' then
+    for _, v in ipairs(first_arg) do
+      table.insert(sentences, string.format(unpack({v})))
+    end
   else
-    (method)(sendto .. string.format(...))
+  -- Otherwise, handle it like a format string.
+    sentences = {string.format(...)}
+  end
+  
+  if not method then
+    local commands = {}
+    for _, v in ipairs(sentences) do
+      table.insert(commands, sendto .. v)
+    end
+    svo.sendc(unpack(commands))
+  else
+    for _, v in ipairs(sentences) do
+      (method)(sendto .. v)
+    end
   end
 end
 
